@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0c2021"><title>English Adventure ∞ · Laberintos Trinity</title>
+<style>:root{--bg:#0c2021;--surface:#152e2d;--surface2:#21403d;--ink:#f0f8e9;--muted:#b0ccc2;--line:#3c655e;--mint:#b7ef8b;--gold:#ffd183;--rose:#ffae9a;--focus:#ffe6a0}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;font:15px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif;background:radial-gradient(ellipse at top,#24443d 0%,transparent 65%),#0c2021;color:var(--ink)}button,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid var(--focus);outline-offset:3px}button:disabled{opacity:.5;cursor:default}
+.shell{width:min(1320px,100%);padding:18px 20px 25px;margin:auto}.masthead{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:16px}.brand{display:flex;gap:13px;align-items:center}.crest{width:55px;height:55px;display:grid;place-items:center;background:linear-gradient(140deg,#2e664e,#163e3f);border:2px solid #a1d786;border-radius:16px;font-size:31px;box-shadow:0 8px 20px #0004}.brand h1{font-size:clamp(21px,2.4vw,31px);line-height:1.05;margin:0;letter-spacing:-.5px}.brand p{margin:5px 0 0;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.8px}.brand .a{color:#b8f09e}.brand .b{color:#ffdb8c}.small-actions{display:flex;gap:8px;align-items:center}
+button,.button{padding:10px 13px;background:#22413d;border:1px solid #679587;color:var(--ink);border-radius:12px;font-weight:780;transition:background .15s,transform .1s}button:hover{background:#30534c}button:active{transform:translateY(1px)}.primary{background:#c9ef99;color:#17352b;border-color:#c9ef99}.primary:hover{background:#e1ffc2}.iconbtn{min-width:44px}.setup{display:grid;grid-template-columns:1.05fr 1.25fr 1.1fr 1.1fr .72fr auto;gap:10px;align-items:end;margin-bottom:13px}.field{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:900;letter-spacing:.65px;color:#c3dfcd}.field select{width:100%;background:#183b37;border:1px solid #568879;border-radius:11px;color:#f5ffe9;padding:10px 11px;font-weight:750;min-width:0}
+.game{--world-border:#82c884;position:relative;background:#182d2b;border:2px solid var(--world-border);border-radius:22px;box-shadow:0 20px 56px #0007;overflow:hidden}.stage{position:relative;background:#18382e;isolation:isolate}.stage canvas{display:block;width:100%;height:auto;aspect-ratio:23/15;touch-action:none}.hud{display:flex;gap:8px;justify-content:space-between;position:absolute;left:12px;right:12px;top:12px;pointer-events:none;align-items:flex-start}.hud-left,.hud-right{display:flex;flex-wrap:wrap;gap:7px;align-items:center}.tag{padding:6px 10px;background:#102b2be3;border:1px solid #b1cfb183;border-radius:10px;box-shadow:0 3px 8px #0006;font-size:14px;font-weight:900;backdrop-filter:blur(4px);white-space:nowrap}.tag small{font-size:10px;color:#b8d5cb;letter-spacing:.5px}.hearts{color:#ff9d98;letter-spacing:1px}.prompt{display:flex;gap:12px;align-items:center;padding:13px 18px;border-top:2px solid #719e83;background:#102925}.prompt .question-mark{font-size:22px;background:#295747;width:43px;height:43px;display:grid;place-items:center;border-radius:12px;flex:none}.question-text{flex:1;min-width:0}.question-label{font-size:10px;letter-spacing:1.5px;font-weight:950;color:#b3e9c2;text-transform:uppercase}.sentence{font-size:clamp(17px,2.3vw,25px);line-height:1.16;font-weight:850;margin:3px 0;overflow-wrap:anywhere}.sentence .blank{color:#ffe6a0}.speak{font-size:19px;min-width:46px;min-height:46px;padding:6px}.game-footer{padding:9px 13px;background:#0f2724;border-top:1px solid #336051;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}.game-footer .help{font-size:12px;color:#c3d6c7}.game-footer .help b{color:#f2e2a9}.toolbuttons{display:flex;gap:7px;flex-wrap:wrap}.toolbuttons button{padding:8px 10px;font-size:12px}
+.toast{position:absolute;z-index:3;top:24%;left:50%;width:max-content;max-width:90%;transform:translate(-50%,-10px);background:#163c36ef;border:2px solid #ffcf8b;border-radius:13px;padding:10px 19px;font-size:18px;font-weight:950;text-align:center;box-shadow:0 12px 30px #0008;opacity:0;pointer-events:none;transition:.15s}.toast.visible{opacity:1;transform:translate(-50%,0)}
+.overlay{position:absolute;inset:0;background:#09221be3;backdrop-filter:blur(6px);z-index:6;display:flex;justify-content:center;align-items:center;padding:16px}.overlay[hidden]{display:none}.dialog{width:min(535px,100%);max-height:95%;overflow:auto;background:linear-gradient(155deg,#315347,#183b32);border:2px solid #b3de9f;border-radius:21px;box-shadow:0 22px 65px #000a;text-align:center;padding:25px}.dialog .hero{font-size:46px;line-height:1.1}.dialog h2{font-size:clamp(23px,4vw,35px);line-height:1.13;margin:8px 0}.dialog p{color:#d9eada;font-size:15px;margin:10px 0;line-height:1.48}.dialog .solution{font-size:clamp(17px,2.5vw,23px);font-weight:900;background:#122d2b;padding:15px;border-radius:12px;margin:16px 0;border:1px solid #7c9e83;line-height:1.35}.dialog .primary{display:block;width:100%;padding:13px;font-size:17px;margin-top:14px}.dialog .hint{font-size:12px;color:#cce0cf;margin-top:11px}.dialog .second{margin-top:7px;background:transparent;font-weight:700;font-size:12px;border:0;text-decoration:underline}
+.dpad{position:absolute;bottom:12px;left:12px;z-index:3;display:none;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,48px);gap:4px;touch-action:none}.dpad button{background:#193a32d9;backdrop-filter:blur(5px);border:2px solid #bad8ac;color:white;border-radius:11px;padding:0;font-size:24px;touch-action:none;user-select:none}.dpad button.held{background:#65a380}.dpad .up{grid-area:1/2}.dpad .left{grid-area:2/1}.dpad .down{grid-area:2/2}.dpad .right{grid-area:2/3}.attackpad{position:absolute;right:12px;bottom:12px;z-index:3;display:none;min-width:62px;min-height:62px;border-radius:18px;background:#6b3448e8;border:2px solid #ffd3a0;color:#fff;font-size:28px;font-weight:900;box-shadow:0 10px 26px #0008;touch-action:none}.attackpad.held{background:#8d4760}
+.note{font-size:12px;color:#aecac1;margin:12px 3px 0;line-height:1.6}.note strong{color:#d5f5bc}
+.game:fullscreen{border:none;border-radius:0;display:flex;flex-direction:column;width:100vw;height:100dvh}.game:fullscreen .stage{flex:1;min-height:0;display:grid;place-items:center}.game:fullscreen canvas{width:100%;height:100%;object-fit:contain;aspect-ratio:auto}.game:fullscreen .prompt{flex:none}.game:fullscreen .game-footer{display:none}.game:fullscreen .dpad,.game:fullscreen .attackpad{display:grid;place-items:center}
+@media (max-width:970px){.setup{grid-template-columns:repeat(2,minmax(0,1fr))}.setup .new{grid-column:span 2}.masthead{align-items:start}.shell{padding:12px}.game-footer{justify-content:center;text-align:center}.game-footer .help{flex-basis:100%}}
+@media (max-width:650px){.masthead{flex-wrap:wrap}.small-actions{margin-left:auto}.crest{width:45px;height:45px;font-size:26px}.brand h1{font-size:22px}.brand p{font-size:10px}.setup{gap:7px}.field select{font-size:12px;padding:8px}.game{border-radius:14px}.hud{left:6px;right:6px;top:6px}.tag{padding:4px 6px;font-size:11px}.tag small{font-size:8px}.prompt{padding:9px;gap:7px}.prompt .question-mark{width:34px;height:34px;font-size:19px}.sentence{font-size:16px}.speak{min-width:38px;min-height:38px}.dpad{display:grid;grid-template-columns:repeat(3,40px);grid-template-rows:repeat(2,40px);bottom:5px;left:5px}.dpad button{font-size:20px}.attackpad{display:grid;right:5px;bottom:5px;min-width:54px;min-height:54px;font-size:24px}.stage canvas{min-height:0}}
+@media (hover:none) and (pointer:coarse){.dpad,.attackpad{display:grid}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style></head>
+<body><main class="shell">
+ <header class="masthead"><div class="brand"><div class="crest" id="crest">🌳</div><div><h1><span class="a">ENGLISH</span> <span class="b">ADVENTURE</span> ∞</h1><p>LABERINTOS DE INGLÉS · TRINITY GESE · SIN INTERNET</p></div></div><div class="small-actions"><button class="iconbtn" id="soundToggle" title="Activar o silenciar efectos">🔊</button><button class="iconbtn" id="fullScreen" title="Pantalla completa">⛶</button></div></header>
+ <div class="setup" aria-label="Opciones de la partida">
+   <label class="field">CURSO<select id="grade"><option value="2">3.º Primaria · GESE 1–2</option><option value="3">5.º Primaria · GESE 3</option></select></label>
+   <label class="field">TEMA DE INGLÉS<select id="topic"></select></label>
+   <label class="field">MUNDO<select id="world"><option value="rotate">🌍 Aventura por cuatro mundos</option><option value="forest">🌿 Bosque encantado</option><option value="castle">🏰 Castillo medieval</option><option value="reef">🐠 Arrecife marino</option><option value="town">🏘️ Pueblo encantado</option></select></label>
+   <label class="field">DIFICULTAD<select id="mode"><option value="practice">Aprender · sin enemigos</option><option value="normal" selected>Normal · con enemigos</option><option value="hard">Desafío · contra el reloj</option></select></label>
+   <label class="field">EMPEZAR EN<select id="startLevel"><option value="1">Nivel 1</option><option value="5">Nivel 5</option><option value="10">Nivel 10</option><option value="20">Nivel 20</option><option value="40">Nivel 40</option></select></label><button class="primary new" id="restart">↻ Nueva aventura</button>
+ </div>
+ <section class="game" id="game" aria-label="Juego de laberintos de inglés">
+  <div class="stage" id="stage"><canvas id="canvas" width="966" height="630" aria-label="Mapa del laberinto; mueve a tu personaje por los pasillos hasta la respuesta correcta"></canvas>
+    <div class="hud"><div class="hud-left"><div class="tag"><small>ETAPA</small> <span id="level">1</span></div><div class="tag"><span id="worldBadge">🌿 Bosque</span></div><div class="tag"><small>ARMA</small> <span id="weaponTag">—</span></div></div><div class="hud-right"><div class="tag">♥ <span class="hearts" id="health">♥♥♥</span></div><div class="tag">⏱ <span id="time">∞</span></div><div class="tag">✓ <span id="points">0</span></div><div class="tag">👾 <span id="enemyTag">0</span></div><div class="tag">🧰 <span id="chestTag">0/0</span></div></div></div>
+    <div class="toast" id="toast" aria-live="polite"></div>
+    <div class="dpad" aria-label="Controles táctiles"><button class="up" data-move="up" aria-label="Arriba">▲</button><button class="left" data-move="left" aria-label="Izquierda">◀</button><button class="down" data-move="down" aria-label="Abajo">▼</button><button class="right" data-move="right" aria-label="Derecha">▶</button></div><button class="attackpad" id="attackPad" aria-label="Atacar">⚔</button>
+  </div>
+  <div class="prompt"><div class="question-mark" id="questionIcon">❓</div><div class="question-text"><div class="question-label">DI LA RESPUESTA EN VOZ ALTA Y ENTRA POR LA PUERTA CORRECTA</div><div class="sentence" id="sentence" aria-live="polite"></div></div><button class="speak" id="speak" aria-label="Escuchar la frase en inglés" title="Escuchar en inglés">🔉</button></div>
+  <div class="game-footer"><div class="help">Mover: <b>flechas / WASD</b> · <b>F</b> o <b>⚔</b> para atacar · <b>toca un pasillo</b> para caminar · <b>Espacio</b> pausa</div><div class="toolbuttons"><button id="attack">⚔ Atacar</button><button id="pause">⏸ Pausa</button><button id="hint">💡 Pista</button><button id="nextQuestion">↪ Cambiar pregunta</button><button id="resetPosition">⌂ Al centro</button></div></div>
+  <div class="overlay" id="overlay"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="hero" id="modalIcon">🌿</div><h2 id="modalTitle">¡Empieza la aventura!</h2><p id="modalText"></p><div class="solution" id="modalSolution" hidden></div><button class="primary" id="modalAction">▶ Comenzar</button><button class="second" id="modalSecond" hidden></button><div class="hint" id="modalHint">Puedes elegir un mundo y un tema para practicar.</div></div></div>
+ </section><p class="note">Creado para clases de inglés de 3.º y 5.º. <strong>Una respuesta correcta no sustituye la práctica oral:</strong> pide al alumno que diga toda la frase antes de continuar. Los temas incluyen vocabulario y estructuras relacionados con Trinity GESE, pero este juego no es un examen oficial.</p>
+ </main><script>(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const COLS=23,ROWS=15,TILE=42,WIDTH=COLS*TILE,HEIGHT=ROWS*TILE;
+const SP={x:11,y:7},ROOMS=[{x:3,y:3},{x:19,y:3},{x:3,y:11},{x:19,y:11}];
+const canvas=$('canvas'),ctx=canvas.getContext('2d',{alpha:false});
+const TOPICS={
+  2:[['all','🎲 Repaso combinado'],['body','👀 Partes del cuerpo'],['animals','🐶 Animales'],['home','🏠 Mi casa'],['family','👨‍👩‍👧 Familia'],['food','🍎 Comida y ropa'],['grammar','💬 Preguntas y frases']],
+  3:[['all','🎲 Repaso combinado'],['weather','☀️ El tiempo'],['jobs','🧑‍🍳 Profesiones'],['places','🏪 Lugares'],['routines','🕗 Rutinas'],['abilities','🚲 Can / Can’t'],['past','🕰️ Was / Were'],['actions','🏃 Acciones y direcciones']]
+};
+const WORLDS={
+ forest:{name:'Bosque encantado',short:'🌿 Bosque',symbol:'🍄',bg1:'#163b31',bg2:'#0b292e',floor:'#365d44',floorAlt:'#31543e',wall:'#385941',wallLight:'#8baa6e',wallDark:'#213a31',edge:'#d6c598',door:'#32593a',panel:'#183b30',trim:'#f2d887',enemy:'#ffd36b'},
+ castle:{name:'Castillo medieval',short:'🏰 Castillo',symbol:'🏰',bg1:'#4c3946',bg2:'#251f34',floor:'#756b66',floorAlt:'#6d6461',wall:'#58525f',wallLight:'#c5b99e',wallDark:'#373443',edge:'#ddac70',door:'#5c355a',panel:'#33263b',trim:'#ffce82',enemy:'#cfe9ff'},
+ reef:{name:'Arrecife marino',short:'🐠 Arrecife',symbol:'🐚',bg1:'#0b5a76',bg2:'#072d4e',floor:'#23768d',floorAlt:'#246c82',wall:'#176176',wallLight:'#8ad9c8',wallDark:'#0e465d',edge:'#f6b78a',door:'#176a72',panel:'#113d5a',trim:'#ffd293',enemy:'#ff9e97'},
+ town:{name:'Pueblo encantado',short:'🏘️ Pueblo',symbol:'🏘️',bg1:'#665046',bg2:'#302b36',floor:'#927d61',floorAlt:'#897357',wall:'#6a594e',wallLight:'#e3c794',wallDark:'#493f40',edge:'#eecb8a',door:'#5f5442',panel:'#4c3b3a',trim:'#ffda86',enemy:'#b5e19c'}
+};
+const WLIST=Object.keys(WORLDS);
+const randInt=n=>Math.floor(Math.random()*n);
+function shuffle(values){const a=values.slice();for(let i=a.length-1;i>0;i--){const j=randInt(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
+function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
+const BANK={};
+const add=(key,prompt,answer,wrong,icon='✏️')=>{
+  if(!BANK[key])BANK[key]=[];
+  const other=[...new Set(wrong.map(String))].filter(a=>a.toUpperCase()!==String(answer).toUpperCase());
+  if(other.length<3)throw new Error('Faltan alternativas: '+prompt);
+  BANK[key].push({topic:key,prompt,answer:String(answer),wrong:other,icon,id:key+'|'+prompt+'|'+answer});
+};
+// Grade 2. Simple, visually supported language: no writing ability is assumed.
+[
+  ['I see with my ___.','EYES',['EARS','HANDS','FEET'],'👀'],
+  ['I hear with my ___.','EARS',['EYES','NOSE','LEGS'],'👂'],
+  ['I smell with my ___.','NOSE',['MOUTH','HANDS','EARS'],'👃'],
+  ['I walk with my ___.','LEGS',['EYES','EARS','HAIR'],'🦵'],
+  ['I clap with my ___.','HANDS',['NOSE','EYES','FEET'],'👏'],
+  ['I eat with my ___.','MOUTH',['EARS','LEGS','HAIR'],'👄'],
+  ['I wear shoes on my ___.','FEET',['HANDS','EARS','HEAD'],'👟'],
+  ['I wear a hat on my ___.','HEAD',['FEET','ARMS','HANDS'],'🧢'],
+  ['My ___ can be long or short.','HAIR',['EYES','HANDS','EARS'],'💇'],
+  ['What is this? 👃 It is a ___.','NOSE',['HAND','LEG','EAR'],'👃'],
+  ['What is this? 👂 It is an ___.','EAR',['EYE','ARM','APPLE'],'👂']
+].forEach(x=>add('body',...x));
+const animals=[['🐶','DOG'],['🐱','CAT'],['🐰','RABBIT'],['🐟','FISH'],['🐴','HORSE'],['🐸','FROG'],['🦁','LION'],['🐼','PANDA'],['🐮','COW'],['🦆','DUCK'],['🐘','ELEPHANT'],['🐒','MONKEY'],['🦋','BUTTERFLY']];
+for(const [emoji,word] of animals){const article=/^[AEIOU]/.test(word)?'an':'a';add('animals',`Look at the animal ${emoji}. It is ${article} ___.`,word,shuffle(animals.map(x=>x[1]).filter(x=>x!==word)).slice(0,5),emoji);}
+[['A ___ has fins and swims in the sea.','FISH',['HORSE','CAT','LION'],'🐟'],['An ___ has a long trunk.','ELEPHANT',['RABBIT','FROG','DOG'],'🐘'],['A ___ says moo.','COW',['DUCK','CAT','FISH'],'🐮'],['A ___ has very long ears.','RABBIT',['FISH','FROG','LION'],'🐰']].forEach(x=>add('animals',...x));
+[
+ ['I sleep in my ___.','BEDROOM',['KITCHEN','BATHROOM','GARDEN'],'🛏️'],
+ ['I cook dinner in the ___.','KITCHEN',['BEDROOM','BATHROOM','GARAGE'],'🍳'],
+ ['I have a shower in the ___.','BATHROOM',['BEDROOM','GARDEN','GARAGE'],'🚿'],
+ ['I park my car in the ___.','GARAGE',['KITCHEN','BEDROOM','BATHROOM'],'🚗'],
+ ['I sleep in a ___.','BED',['CHAIR','TABLE','WINDOW'],'🛏️'],
+ ['I sit on a ___.','CHAIR',['WINDOW','DOOR','CARPET'],'🪑'],
+ ['I look out of the ___.','WINDOW',['BED','TABLE','FLOOR'],'🪟'],
+ ['There ___ three chairs in the room.','ARE',['IS','HAS','AM'],'🏠'],
+ ['There ___ a big bed in my room.','IS',['ARE','HAVE','AM'],'🛏️'],
+ ['There ___ two windows.','ARE',['IS','HAS','AM'],'🪟'],
+ ['There ___ one bathroom.','IS',['ARE','HAVE','AM'],'🚿']
+].forEach(x=>add('home',...x));
+[
+ ['My mother’s mother is my ___.','GRANDMOTHER',['GRANDFATHER','UNCLE','SISTER'],'👵'],
+ ['My father’s father is my ___.','GRANDFATHER',['GRANDMOTHER','AUNT','BROTHER'],'👴'],
+ ['My mother’s sister is my ___.','AUNT',['UNCLE','BROTHER','GRANDFATHER'],'👩'],
+ ['My father’s brother is my ___.','UNCLE',['AUNT','SISTER','GRANDMOTHER'],'👨'],
+ ['My mum and dad are my ___.','PARENTS',['FRIENDS','COUSINS','PETS'],'👨‍👩‍👧'],
+ ['My mother’s daughter (not me) is my ___.','SISTER',['BROTHER','FATHER','UNCLE'],'👧'],
+ ['My father’s son (not me) is my ___.','BROTHER',['SISTER','MOTHER','AUNT'],'👦'],
+ ['I ___ got a sister.','HAVE',['HAS','AM','IS'],'👨‍👩‍👧'],
+ ['She ___ got a brother.','HAS',['HAVE','IS','ARE'],'👨‍👩‍👧'],
+ ['___ you got any brothers?','HAVE',['HAS','ARE','IS'],'❓']
+].forEach(x=>add('family',...x));
+const foods=[['🍎','APPLE'],['🍌','BANANA'],['🍕','PIZZA'],['🥕','CARROT'],['🍞','BREAD'],['🧀','CHEESE'],['🍋','LEMON'],['🍰','CAKE'],['🥚','EGG']];
+for(const [emoji,word] of foods){const article=/^[AEIOU]/.test(word)?'an':'a';const phrase=['BREAD','CHEESE'].includes(word)?`What food is this? ${emoji} It's ___.`:`What food is this? ${emoji} It's ${article} ___.`;add('food',phrase,word,shuffle(foods.map(x=>x[1]).filter(x=>x!==word)).slice(0,5),emoji);}
+const clothes=[['🧢','CAP'],['🧦','SOCKS'],['👗','DRESS'],['👟','SHOES'],['👕','T-SHIRT'],['🧣','SCARF'],['🧤','GLOVES']];
+for(const [emoji,word] of clothes)add('food',`Which clothes can you see? ${emoji} ___`,word,shuffle(clothes.map(x=>x[1]).filter(x=>x!==word)).slice(0,5),emoji);
+[
+ ['What ___ your name?','IS',['ARE','HAVE','DO'],'👋'],
+ ['How ___ are you?','OLD',['MANY','MUCH','BIG'],'🎂'],
+ ['Where ___ you live?','DO',['DOES','IS','HAS'],'🏠'],
+ ['When ___ your birthday?','IS',['ARE','HAVE','DO'],'🎈'],
+ ['I ___ eight years old.','AM',['IS','ARE','HAVE'],'🎂'],
+ ['She ___ got blue eyes.','HAS',['HAVE','IS','ARE'],'👀'],
+ ['We ___ happy today.','ARE',['IS','AM','HAS'],'😊'],
+ ['He ___ my friend.','IS',['ARE','AM','HAVE'],'🤝'],
+ ['They ___ in my family.','ARE',['IS','HAS','AM'],'👪'],
+ ['___ you got a pet?','HAVE',['HAS','ARE','IS'],'🐶'],
+ ['I ___ got two hands.','HAVE',['HAS','AM','IS'],'👏']
+].forEach(x=>add('grammar',...x));
+// Grade 3. Keep one defensible answer per question: distractors avoid valid alternatives.
+const weather=[['☀️','SUNNY'],['🌧️','RAINY'],['☁️','CLOUDY'],['🌬️','WINDY'],['❄️','SNOWY'],['⛈️','STORMY'],['🌫️','FOGGY']];
+for(const [emoji,word] of weather)add('weather',`Look outside: ${emoji} The weather is ___.`,word,shuffle(weather.map(x=>x[1]).filter(x=>x!==word)).slice(0,5),emoji);
+[['Yesterday it ___ sunny.','WAS',['WERE','IS','ARE'],'☀️'],['Yesterday we ___ cold.','WERE',['WAS','IS','AM'],'❄️'],['What ___ the weather like yesterday?','WAS',['WERE','IS','DO'],'🌤️'],['It ___ rainy last Tuesday.','WAS',['WERE','ARE','HAS'],'🌧️'],['Today it ___ windy.','IS',['ARE','AM','DO'],'🌬️']].forEach(x=>add('weather',...x));
+[
+ ['A ___ teaches children at school.','TEACHER',['CHEF','PILOT','FARMER'],'👩‍🏫'],
+ ['A ___ cooks meals in a restaurant.','CHEF',['WAITER','DENTIST','PILOT'],'👨‍🍳'],
+ ['A ___ flies aeroplanes.','PILOT',['TEACHER','CHEF','FARMER'],'✈️'],
+ ['A ___ puts out fires.','FIREFIGHTER',['CHEF','DOCTOR','WAITER'],'🚒'],
+ ['A ___ repairs cars.','MECHANIC',['DENTIST','TEACHER','CHEF'],'🔧'],
+ ['A ___ grows food on a farm.','FARMER',['PILOT','WAITER','MECHANIC'],'🚜'],
+ ['A ___ helps sick people in hospital.','DOCTOR',['CHEF','TEACHER','PILOT'],'🩺'],
+ ['A ___ looks after your teeth.','DENTIST',['WAITER','FARMER','PILOT'],'🦷'],
+ ['A ___ brings food to your table in a restaurant.','WAITER',['PILOT','DENTIST','FARMER'],'🍽️']
+].forEach(x=>add('jobs',...x));
+[
+ ['I borrow books from the ___.','LIBRARY',['CINEMA','HOSPITAL','SWIMMING POOL'],'📚'],
+ ['I watch a film at the ___.','CINEMA',['PHARMACY','LIBRARY','SCHOOL'],'🎬'],
+ ['I buy medicine at the ___.','PHARMACY',['CINEMA','MUSEUM','PARK'],'💊'],
+ ['I can see old paintings at the ___.','MUSEUM',['SWIMMING POOL','SUPERMARKET','HOSPITAL'],'🖼️'],
+ ['I buy fruit at the ___.','SUPERMARKET',['HOSPITAL','MUSEUM','CINEMA'],'🛒'],
+ ['I can see wild animals at the ___.','ZOO',['LIBRARY','PHARMACY','SCHOOL'],'🦒'],
+ ['I can swim at the ___.','SWIMMING POOL',['LIBRARY','CINEMA','MUSEUM'],'🏊'],
+ ['A teacher works at a ___.','SCHOOL',['CINEMA','PHARMACY','SWIMMING POOL'],'🏫'],
+ ['A doctor works in a ___.','HOSPITAL',['CINEMA','MUSEUM','SUPERMARKET'],'🏥'],
+ ['There ___ a library next to the school.','IS',['ARE','HAVE','DO'],'📚'],
+ ['There ___ two parks in our town.','ARE',['IS','HAS','DO'],'🌳']
+].forEach(x=>add('places',...x));
+[
+ ['I ___ breakfast at eight every morning.','HAVE',['HAS','AM','IS'],'🥣'],
+ ['She ___ breakfast at eight every morning.','HAS',['HAVE','AM','ARE'],'🥣'],
+ ['We ___ to school every weekday.','GO',['GOES','GOING','WENT'],'🏫'],
+ ['He ___ to school every weekday.','GOES',['GO','GOING','WENT'],'🏫'],
+ ['I ___ up at seven every morning.','GET',['GETS','GETTING','GOT'],'⏰'],
+ ['He ___ his teeth every night.','BRUSHES',['BRUSH','BRUSHING','BRUSHED'],'🪥'],
+ ['They ___ football every Saturday.','PLAY',['PLAYS','PLAYING','PLAYED'],'⚽'],
+ ['She ___ her homework every afternoon.','DOES',['DO','DOING','DID'],'📚'],
+ ['What time ___ you get up every morning?','DO',['DOES','IS','ARE'],'⏰'],
+ ['What time ___ she go to bed?','DOES',['DO','IS','HAS'],'🌙'],
+ ['We ___ lunch at one every day.','HAVE',['HAS','IS','AM'],'🍽️']
+].forEach(x=>add('routines',...x));
+[
+ ['A fish ___ swim.','CAN',["CAN’T",'DOES','IS'],'🐟'],
+ ['A cat ___ fly like a bird.',"CAN’T",['CAN','DOES','HAS'],'🐱'],
+ ['___ you swim?','CAN',['DOES','IS','HAS'],'🏊'],
+ ['She knows how to ride a bike. She ___ ride a bike.','CAN',["CAN’T",'ARE','HAS'],'🚲'],
+ ['A person ___ breathe underwater without equipment.',"CAN’T",['CAN','DOES','IS'],'🤿'],
+ ['A bird ___ fly.','CAN',["CAN’T",'DOES','HAS'],'🐦'],
+ ['He knows English. He ___ speak English.','CAN',["CAN’T",'DOES','ARE'],'💬'],
+ ['A baby ___ drive a car.',"CAN’T",['CAN','DOES','HAS'],'👶']
+].forEach(x=>add('abilities',...x));
+[
+ ['I ___ at home yesterday.','WAS',['WERE','IS','AM'],'🏠'],
+ ['You ___ at school yesterday.','WERE',['WAS','IS','ARE'],'🏫'],
+ ['He ___ tired last night.','WAS',['WERE','IS','ARE'],'🌙'],
+ ['They ___ at the park last Sunday.','WERE',['WAS','IS','AM'],'🌳'],
+ ['We ___ happy yesterday.','WERE',['WAS','ARE','IS'],'😊'],
+ ['The weather ___ sunny yesterday.','WAS',['WERE','IS','ARE'],'☀️'],
+ ['My friends ___ here last weekend.','WERE',['WAS','IS','AM'],'🤝'],
+ ['She ___ at the cinema yesterday.','WAS',['WERE','IS','ARE'],'🎬']
+].forEach(x=>add('past',...x));
+[
+ ['Look! She ___ running.','IS',['ARE','DO','HAS'],'🏃'],
+ ['Look! They ___ playing football.','ARE',['IS','DO','HAS'],'⚽'],
+ ['Listen! He ___ singing.','IS',['ARE','DO','HAS'],'🎶'],
+ ['Look! The dog ___ sleeping.','IS',['ARE','DO','HAVE'],'🐶'],
+ ['Look! We ___ dancing.','ARE',['IS','DO','HAS'],'💃'],
+ ['Follow the arrow ➡️ Turn ___.','RIGHT',['LEFT','BACK','DOWN'],'➡️'],
+ ['Follow the arrow ⬅️ Turn ___.','LEFT',['RIGHT','STRAIGHT','DOWN'],'⬅️'],
+ ['Follow the arrow ⬆️ Go ___.','STRAIGHT',['LEFT','RIGHT','BACK'],'⬆️'],
+ ['Follow the arrow ⬇️ Go ___.','BACK',['LEFT','RIGHT','STRAIGHT'],'⬇️']
+].forEach(x=>add('actions',...x));
+// Expand phrase variety with grammatically unambiguous, generated situational examples.
+for(const place of ['bedroom','kitchen','bathroom','garden','garage']){
+  const things={bedroom:['bed','pillow'],kitchen:['fridge','cooker'],bathroom:['shower','toilet'],garden:['tree','flower'],garage:['car','bicycle']};
+  for(const thing of things[place]){
+    const nots=['BEDROOM','KITCHEN','BATHROOM','GARDEN','GARAGE'].filter(a=>a!==place.toUpperCase());
+    add('home',`In this house, the ${thing} is in the ___.`,place.toUpperCase(),nots,'🏠');
+  }
+}
+for(const subject of [['He','HAS','HAVE'],['She','HAS','HAVE'],['I','HAVE','HAS'],['They','HAVE','HAS'],['We','HAVE','HAS']]){
+  for(const obj of ['a red bag','a pet cat','two books','a blue pencil'])add('grammar',`${subject[0]} ___ got ${obj}.`,subject[1],[subject[2],'IS','ARE'],'🎒');
+}
+for(const subject of [['He','IS'],['She','IS'],['I','AM'],['We','ARE'],['They','ARE'],['You','ARE']]){
+  for(const feeling of ['happy','hungry','tired','ready'])add('grammar',`${subject[0]} ___ ${feeling}.`,subject[1],['IS','ARE','AM','HAS'].filter(x=>x!==subject[1]),'😊');
+}
+for(const sub of [['He','IS'],['She','IS'],['They','ARE'],['We','ARE'],['I','AM']]){
+  for(const act of ['reading','sleeping','playing','drawing'])add('actions',`Look! ${sub[0]} ___ ${act}.`,sub[1],['IS','ARE','AM','DO','HAS'].filter(x=>x!==sub[1]),'🎨');
+}
+const GRADE_KEYS={2:['body','animals','home','family','food','grammar'],3:['weather','jobs','places','routines','abilities','past','actions']};
+const WEAPONS={none:{name:'Sin arma',icon:'—',cooldown:0},sword:{name:'Espada',icon:'🗡️',cooldown:.38},wand:{name:'Varita',icon:'✨',cooldown:.34},trident:{name:'Tridente',icon:'🔱',cooldown:.42},bow:{name:'Arco',icon:'🏹',cooldown:.36}};
+let state={grade:2,topic:'all',worldChoice:'rotate',world:'forest',mode:'normal',level:1,points:0,hearts:3,maxHearts:5,time:Infinity,status:'intro',grid:[],player:{x:11.5,y:7.5},doors:[],enemies:[],chests:[],projectiles:[],question:null,questionHistory:[],invincible:0,shake:0,elapsed:0,auto:[],hint:false,weapon:{type:'none',ammo:0,cooldown:0},lastDir:{x:1,y:0},slash:0,chestsOpened:0,kills:0};
+let keys={up:false,down:false,left:false,right:false},lastFrame=performance.now(),noticeUntil=0;
+let soundsOn=true,audio=null,speechSupport=('speechSynthesis' in window),animId=0,enemyNavAt=0,navDist=null;
+const isWall=(x,y)=>y<0||x<0||y>=ROWS||x>=COLS||state.grid[y]?.[x]!==0;
+const collision=(x,y,r=.27)=>isWall(Math.floor(x-r),Math.floor(y-r))||isWall(Math.floor(x+r),Math.floor(y-r))||isWall(Math.floor(x-r),Math.floor(y+r))||isWall(Math.floor(x+r),Math.floor(y+r));
+const center=(p)=>({x:p.x+.5,y:p.y+.5});
+function distanceMap(sx,sy){const d=Array.from({length:ROWS},()=>Array(COLS).fill(Infinity));sx=Math.floor(sx);sy=Math.floor(sy);if(isWall(sx,sy))return d;const todo=[[sx,sy]];let n=0;d[sy][sx]=0;while(n<todo.length){const [x,y]=todo[n++];for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(!isWall(nx,ny)&&d[ny][nx]===Infinity){d[ny][nx]=d[y][x]+1;todo.push([nx,ny]);}}}return d;}
+function createMaze(){let g=Array.from({length:ROWS},()=>Array(COLS).fill(1));const stack=[[SP.x,SP.y]];g[SP.y][SP.x]=0;
+ while(stack.length){const [x,y]=stack[stack.length-1];const neigh=shuffle([[2,0],[-2,0],[0,2],[0,-2]]).filter(([dx,dy])=>x+dx>0&&x+dx<COLS-1&&y+dy>0&&y+dy<ROWS-1&&g[y+dy][x+dx]===1);
+ if(!neigh.length){stack.pop();continue;}const [dx,dy]=neigh[0];g[y+dy/2][x+dx/2]=0;g[y+dy][x+dx]=0;stack.push([x+dx,y+dy]);}
+ // Open some cross-corridors: with experience the maze becomes twistier, but not disconnected.
+ const shortcuts=Math.max(2,12-Math.floor(state.level/3));
+ for(let i=0;i<shortcuts*8;i++){const x=1+randInt(COLS-2),y=1+randInt(ROWS-2);if(g[y][x]!==1)continue;const across=(!g[y-1][x]&&!g[y+1][x])||(!g[y][x-1]&&!g[y][x+1]);if(across&&Math.random()<.25)g[y][x]=0;}
+ for(const r of [...ROOMS,SP])for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)g[r.y+dy][r.x+dx]=0;
+ state.grid=g;
+ const distances=distanceMap(SP.x,SP.y);
+ if(!ROOMS.every(p=>Number.isFinite(distances[p.y][p.x])))throw Error('Laberinto desconectado: puerta inaccesible');
+}
+function newQuestion(){const k=state.topic==='all'?GRADE_KEYS[state.grade]:[state.topic];let candidates=k.flatMap(key=>BANK[key]);if(state.level<=2)candidates=candidates.filter(q=>q.prompt.length<105);let available=candidates.filter(q=>!state.questionHistory.includes(q.id));if(!available.length){state.questionHistory=[];available=candidates;}
+ const q=available[randInt(available.length)];state.questionHistory.push(q.id);if(state.questionHistory.length>Math.min(32,candidates.length-1))state.questionHistory.shift();
+ const alternatives=state.level<=2?2:state.level<=6?3:4;
+ const options=shuffle([q.answer,...shuffle(q.wrong).slice(0,alternatives-1)]);
+ if(new Set(options).size!==options.length||options.filter(x=>x===q.answer).length!==1)throw Error('Opciones incorrectas: '+q.prompt);
+ const raw=q.prompt.replace('___',q.answer.toLowerCase());const full=raw[0].toUpperCase()+raw.slice(1);return {...q,options,full};
+}
+function getWorld(){return state.worldChoice==='rotate'?WLIST[Math.floor((state.level-1)/4)%WLIST.length]:state.worldChoice;}
+function enemyCountForLevel(){if(state.mode==='practice')return 0;const base=state.mode==='hard'?2:1;return Math.min(state.mode==='hard'?10:8,base+Math.floor((state.level-1)/2));}
+function chestCountForLevel(){return state.level<2?0:Math.min(3,1+Math.floor((state.level-2)/4));}
+function weaponLabel(){const w=WEAPONS[state.weapon.type]||WEAPONS.none;return state.weapon.type==='none'?w.icon:`${w.icon} ${state.weapon.ammo}`;}
+function placeEnemies(){state.enemies=[];if(state.mode==='practice')return;
+ const count=enemyCountForLevel();
+ const d=distanceMap(SP.x,SP.y),spots=[];
+ for(let y=1;y<ROWS-1;y++)for(let x=1;x<COLS-1;x++)if(!isWall(x,y)&&d[y][x]>=6&&!ROOMS.some(p=>Math.hypot(p.x-x,p.y-y)<2.4))spots.push({x,y,d:d[y][x]});
+ spots.sort((a,b)=>b.d-a.d);
+ for(let i=0;i<count&&spots.length;i++){
+  const idx=randInt(Math.min(15,spots.length)),p=spots.splice(idx,1)[0];
+  state.enemies.push({x:p.x+.5,y:p.y+.5,target:null,phase:i*1.7+Math.random()*3});
+ }
+}
+function placeChests(){state.chests=[];const count=chestCountForLevel();if(!count)return;const d=distanceMap(SP.x,SP.y),spots=[];
+ for(let y=1;y<ROWS-1;y++)for(let x=1;x<COLS-1;x++)if(!isWall(x,y)&&d[y][x]>=4&&!ROOMS.some(p=>Math.hypot(p.x-x,p.y-y)<2.1)&&Math.hypot(SP.x-x,SP.y-y)>3.2)spots.push({x,y,d:d[y][x]});
+ spots.sort((a,b)=>b.d-a.d);
+ for(let i=0;i<count&&spots.length;i++){const idx=randInt(Math.min(18,spots.length)),p=spots.splice(idx,1)[0];state.chests.push({x:p.x+.5,y:p.y+.5,opened:false,pulse:Math.random()*6});}
+}
+function populate(keepQuestion=false){state.world=getWorld();createMaze();if(!keepQuestion)state.question=newQuestion();
+ const positions=shuffle(ROOMS);
+ state.doors=state.question.options.map((answer,i)=>({answer,x:positions[i].x+.5,y:positions[i].y+.5,correct:answer===state.question.answer}));
+ state.player={x:SP.x+.5,y:SP.y+.5};state.auto=[];state.invincible=1.8;state.hint=false;state.elapsed=0;state.projectiles=[];state.slash=0;state.weapon.cooldown=0;state.lastDir={x:1,y:0};if(state.hearts<1)state.hearts=3;state.time=state.mode==='practice'?Infinity:(state.mode==='hard'?Math.max(50,95-state.level*1.6):Math.max(88,145-state.level*1.7));
+ state.shake=0;enemyNavAt=0;navDist=null;keys={up:false,down:false,left:false,right:false};placeEnemies();placeChests();updateUI();}
+function updateTopicOptions(){const options=TOPICS[Number($('grade').value)];const old=$('topic').value;$('topic').innerHTML='';for(const [id,title] of options){const o=document.createElement('option');o.value=id;o.textContent=title;$('topic').appendChild(o);}if(options.some(x=>x[0]===old))$('topic').value=old;}
+function updateUI(){const w=WORLDS[state.world];$('crest').textContent=w.symbol;$('worldBadge').textContent=w.short;$('level').textContent=state.level;$('points').textContent=state.points;$('health').textContent='♥'.repeat(state.hearts)+'♡'.repeat(Math.max(0,state.maxHearts-state.hearts));$('time').textContent=Number.isFinite(state.time)?Math.ceil(state.time)+'s':'∞';$('questionIcon').textContent=state.question?.icon||'❓';$('game').style.setProperty('--world-border',w.wallLight);$('weaponTag').textContent=weaponLabel();$('enemyTag').textContent=state.enemies.length;$('chestTag').textContent=`${state.chests.filter(c=>c.opened).length}/${state.chests.length}`;
+ if(state.question){const [a,...rest]=state.question.prompt.split('___');$('sentence').textContent='';$('sentence').append(document.createTextNode(a));const b=document.createElement('span');b.className='blank';b.textContent='______';$('sentence').append(b,document.createTextNode(rest.join('___')));}}
+function overlay({icon='🌿',title,text='',solution='',action='▶ Continuar',onAction=resume,second='',onSecond=null}){
+ state.status='modal';keys={up:false,down:false,left:false,right:false};state.auto=[];$('overlay').hidden=false;$('modalIcon').textContent=icon;$('modalTitle').textContent=title;$('modalText').textContent=text;$('modalSolution').hidden=!solution;$('modalSolution').textContent=solution;$('modalAction').textContent=action;$('modalAction').onclick=onAction;
+ $('modalSecond').hidden=!second;$('modalSecond').textContent=second;$('modalSecond').onclick=onSecond;}
+function resume(){$('overlay').hidden=true;state.status='playing';lastFrame=performance.now();}
+function startNew(){state.grade=Number($('grade').value);state.topic=$('topic').value;state.mode=$('mode').value;state.worldChoice=$('world').value;state.points=0;state.level=Number($('startLevel').value)||1;state.questionHistory=[];state.hearts=3;state.weapon={type:'none',ammo:0,cooldown:0};state.kills=0;state.chestsOpened=0;populate();const world=WORLDS[state.world];overlay({icon:world.symbol,title:'¡Comienza la aventura!',text:'Camina por el laberinto, abre cofres, consigue armas y encuentra la respuesta correcta. Cada 2 niveles aparecerá 1 enemigo más.',solution:'Di tu respuesta en inglés, busca la puerta correcta y usa F o ⚔ si te persiguen.',action:'▶ ¡Jugar!'});}
+function nextLevel(){state.level++;populate();resume();}
+function toast(message){$('toast').textContent=message;$('toast').classList.add('visible');noticeUntil=performance.now()+1400;}
+function playSound(type){if(!soundsOn)return;try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type=type==='bad'?'triangle':'sine';const t=audio.currentTime;o.frequency.setValueAtTime(type==='good'?520:210,t);o.frequency.exponentialRampToValueAtTime(type==='good'?850:110,t+.14);g.gain.setValueAtTime(.075,t);g.gain.exponentialRampToValueAtTime(.001,t+.20);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.21);}catch(e){}}
+function safeSpawn(){state.player={x:SP.x+.5,y:SP.y+.5};state.auto=[];state.invincible=2.2;state.lastDir={x:1,y:0};}
+function fail(reason){if(state.status!=='playing'||state.invincible>0)return;
+ if(state.mode==='practice'){toast('No es esa. ¡Prueba otra puerta!');safeSpawn();return;}
+ state.hearts=Math.max(0,state.hearts-1);playSound('bad');safeSpawn();updateUI();if(state.hearts<=0){overlay({icon:'💛',title:'¡Otra oportunidad!',text:'Pierdes las vidas de esta etapa, pero mantienes los puntos logrados. Vuelves con 3 corazones.',solution:state.question.prompt,action:'↻ Reintentar nivel',onAction:()=>{state.hearts=3;populate(true);resume();}})}else toast(`${reason} · Te quedan ${state.hearts} vidas`);
+}
+function success(){if(state.status!=='playing')return;state.points++;playSound('good');updateUI();overlay({icon:'🏆',title:'¡Respuesta correcta!',text:'Antes de seguir, el alumno debe decir esta frase completa en inglés:',solution:state.question.full,action:'▶ Siguiente nivel',onAction:nextLevel,second:state.weapon.type==='none'?'':'Arma actual: '+WEAPONS[state.weapon.type].name+' · usos restantes '+state.weapon.ammo});}
+function checkDoor(){for(const door of state.doors){if(dist(state.player,door)<.68){if(door.correct)success();else fail('Puerta equivocada');return true;}}return false;}
+function slide(dx,dy,steps){const len=Math.hypot(dx,dy);if(len<.001)return;dx/=len;dy/=len;const chunks=Math.max(1,Math.ceil(steps/.12));for(let i=0;i<chunks;i++){const nx=state.player.x+dx*steps/chunks;if(!collision(nx,state.player.y))state.player.x=nx;const ny=state.player.y+dy*steps/chunks;if(!collision(state.player.x,ny))state.player.y=ny;}checkDoor();}
+function walk(dt){let dx=Number(keys.right)-Number(keys.left),dy=Number(keys.down)-Number(keys.up);if(dx||dy){state.auto=[];state.lastDir={x:dx||state.lastDir.x,y:dy||state.lastDir.y};slide(dx,dy,4.2*dt);return;}
+ if(!state.auto.length)return;
+ const target=state.auto[0],deltaX=target.x-state.player.x,deltaY=target.y-state.player.y,len=Math.hypot(deltaX,deltaY);if(len<.07){state.player={...target};state.auto.shift();checkDoor();return;}state.lastDir={x:deltaX||state.lastDir.x,y:deltaY||state.lastDir.y};slide(deltaX,deltaY,Math.min(len,3.8*dt));}
+function nearestOpen(x,y){x=clamp(Math.floor(x),1,COLS-2);y=clamp(Math.floor(y),1,ROWS-2);if(!isWall(x,y))return {x,y};const opts=[];for(let j=1;j<ROWS-1;j++)for(let i=1;i<COLS-1;i++)if(!isWall(i,j))opts.push({x:i,y:j,d:Math.hypot(i-x,j-y)});opts.sort((a,b)=>a.d-b.d);return opts[0];}
+function pathTo(target){const sx=Math.floor(state.player.x),sy=Math.floor(state.player.y),tx=target.x,ty=target.y;
+ if(isWall(tx,ty))return [];
+ const prev=Array.from({length:ROWS},()=>Array(COLS).fill(null)),todo=[[sx,sy]];let i=0;prev[sy][sx]=[sx,sy];
+ while(i<todo.length){const [x,y]=todo[i++];if(x===tx&&y===ty)break;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(!isWall(nx,ny)&&!prev[ny][nx]){prev[ny][nx]=[x,y];todo.push([nx,ny]);}}}
+ if(!prev[ty][tx])return [];
+ const path=[];let x=tx,y=ty;while(x!==sx||y!==sy){path.push({x:x+.5,y:y+.5});[x,y]=prev[y][x];}return path.reverse();}
+function clickToMove(event){if(state.status!=='playing')return;const b=canvas.getBoundingClientRect();const ratio=Math.min(b.width/WIDTH,b.height/HEIGHT);const offsetX=(b.width-WIDTH*ratio)/2,offsetY=(b.height-HEIGHT*ratio)/2;const x=(event.clientX-b.left-offsetX)/ratio/TILE,y=(event.clientY-b.top-offsetY)/ratio/TILE;if(x<0||x>=COLS||y<0||y>=ROWS)return;const open=nearestOpen(x,y);state.auto=pathTo(open);}
+function moveEnemies(dt){if(!state.enemies.length)return;enemyNavAt-=dt;if(enemyNavAt<=0){navDist=distanceMap(state.player.x,state.player.y);enemyNavAt=.26;}
+ const speed=(state.mode==='hard'?1.72:1.31)+Math.min(.32,Math.floor((state.level-1)/5)*.05);
+ for(const e of state.enemies){if(!e.target||dist(e,e.target)<.09){const cx=Math.floor(e.x),cy=Math.floor(e.y);let n=shuffle([[1,0],[-1,0],[0,1],[0,-1]]).map(([dx,dy])=>({x:cx+dx,y:cy+dy})).filter(p=>!isWall(p.x,p.y));n.sort((a,b)=>(navDist?.[a.y]?.[a.x]??Infinity)-(navDist?.[b.y]?.[b.x]??Infinity));
+ e.target=n.length?center(n[Math.random()<.18&&n.length>1?randInt(Math.min(3,n.length)):0]):null;}
+ if(e.target){const dx=e.target.x-e.x,dy=e.target.y-e.y,r=Math.hypot(dx,dy),step=Math.min(r,speed*dt);if(r>.0001){e.x+=dx/r*step;e.y+=dy/r*step;}}
+ if(state.invincible<=0&&dist(e,state.player)<.53){fail('¡Te han alcanzado!');return;}
+ }
+}
+function awardChest(chest){if(chest.opened)return;chest.opened=true;state.chestsOpened++;let gains=[];const lowAmmo=state.weapon.type==='none'||state.weapon.ammo<=1;
+ if(lowAmmo||Math.random()<.62){const pools={forest:['bow','sword','wand'],castle:['sword','bow','wand'],reef:['trident','wand','sword'],town:['wand','bow','sword']};const type=pools[state.world][randInt(pools[state.world].length)];const ammo=(type==='sword'?2:3)+Math.floor(state.level/6);if(state.weapon.type===type)state.weapon.ammo+=ammo;else state.weapon={type,ammo,cooldown:0};gains.push(`${WEAPONS[type].icon} ${WEAPONS[type].name} x${ammo}`);}
+ else if(state.hearts<state.maxHearts&&Math.random()<.5){state.hearts++;gains.push('♥ +1 vida');}
+ else if(Number.isFinite(state.time)){const bonus=12+Math.floor(state.level/3)*2;state.time+=bonus;gains.push(`⏱ +${bonus}s`);}
+ else {state.points+=2;gains.push('✓ +2 puntos');}
+ if(Math.random()<.2&&state.hearts<state.maxHearts){state.hearts++;gains.push('♥ +1 vida');}
+ updateUI();playSound('good');toast('Cofre abierto: '+gains.join(' · '));}
+function checkChest(){for(const chest of state.chests){if(!chest.opened&&dist(state.player,chest)<.6){awardChest(chest);return true;}}return false;}
+function nearestEnemy(maxDist=99){let best=null,bestD=maxDist;for(const e of state.enemies){const d=dist(e,state.player);if(d<bestD){best=e;bestD=d;}}return best;}
+function defeatEnemy(target){const i=state.enemies.indexOf(target);if(i>=0){state.enemies.splice(i,1);state.kills++;state.points+=1;updateUI();}}
+function useWeapon(){if(state.status!=='playing')return;if(state.weapon.type==='none'||state.weapon.ammo<=0){toast('No tienes arma equipada');return;}if(state.weapon.cooldown>0)return;const type=state.weapon.type;state.weapon.cooldown=WEAPONS[type].cooldown;let consumed=false;
+ if(type==='sword'){state.slash=.15;const victims=state.enemies.filter(e=>dist(e,state.player)<1.15);if(victims.length){for(const e of victims)defeatEnemy(e);consumed=true;toast('¡Golpe de espada!');}else toast('Acércate más al enemigo');}
+ else {let vx=state.lastDir.x||1,vy=state.lastDir.y||0;const target=nearestEnemy(7.8);if(target){vx=target.x-state.player.x;vy=target.y-state.player.y;}const len=Math.hypot(vx,vy)||1;vx/=len;vy/=len;state.projectiles.push({x:state.player.x,y:state.player.y,vx,vy,life:type==='wand'?1.0:1.2,type});consumed=true;}
+ if(consumed){state.weapon.ammo--;if(state.weapon.ammo<=0){state.weapon={type:'none',ammo:0,cooldown:0};toast('El arma se ha agotado');}updateUI();}}
+function moveProjectiles(dt){if(state.weapon.cooldown>0)state.weapon.cooldown=Math.max(0,state.weapon.cooldown-dt);for(let i=state.projectiles.length-1;i>=0;i--){const p=state.projectiles[i];const speed=p.type==='wand'?7.2:p.type==='trident'?8.1:8.6;p.life-=dt;p.x+=p.vx*speed*dt;p.y+=p.vy*speed*dt;if(p.life<=0||collision(p.x,p.y,.12)){state.projectiles.splice(i,1);continue;}let hit=false;for(const e of [...state.enemies]){if(dist(p,e)<.42){defeatEnemy(e);hit=true;if(p.type!=='trident'){state.projectiles.splice(i,1);}break;}}if(hit&&p.type!=='trident')continue;}}
+function pause(){if(state.status==='playing')overlay({icon:'⏸',title:'Juego en pausa',text:'Puedes aprovechar para que el alumno explique por qué ha elegido una respuesta.',action:'▶ Seguir jugando'});
+ else if(state.status==='modal'&&$('modalTitle').textContent==='Juego en pausa')resume();}
+function freshQuestion(){if(state.status!=='playing')return;state.question=newQuestion();state.doors=state.doors.map((d,i)=>({...d,answer:state.question.options[i],correct:state.question.options[i]===state.question.answer}));safeSpawn();updateUI();toast('Nueva pregunta · mismo nivel');}
+function giveHint(){if(state.status!=='playing')return;const s=state.question.answer;state.hint=!state.hint;toast(state.hint?'Pista: empieza por '+s.slice(0,1)+' · '+s.length+' letras':'Pista oculta');}
+function speak(){if(!speechSupport||!state.question)return;try{speechSynthesis.cancel();const s=new SpeechSynthesisUtterance(state.question.prompt.replace('___','blank').replace(/\p{Extended_Pictographic}/gu,''));s.lang='en-GB';s.rate=.86;speechSynthesis.speak(s);}catch(e){toast('No hay voz inglesa disponible');}}
+// Draw only original vector graphics: no images or external resources.
+function rounded(x,y,w,h,r=6){r=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function box(x,y,w,h,r,fill,stroke=null,lw=1){rounded(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}}
+function circle(x,y,r,color){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();}
+function worldBackground(t){const w=WORLDS[state.world];const gradient=ctx.createLinearGradient(0,0,WIDTH,HEIGHT);gradient.addColorStop(0,w.bg1);gradient.addColorStop(1,w.bg2);ctx.fillStyle=gradient;ctx.fillRect(0,0,WIDTH,HEIGHT);
+ // tiny environmental motifs, consistent and inexpensive, different in each world
+ for(let j=0;j<40;j++){const x=((j*163+37)%WIDTH),y=((j*109+17)%HEIGHT),pulse=.7+.3*Math.sin(t*.001+j);
+ ctx.save();ctx.globalAlpha=.4*pulse;
+ if(state.world==='forest'){circle(x,y,3,'#8ecb76');circle(x+6,y-3,1.5,'#e1dd94');}
+ if(state.world==='castle'){ctx.fillStyle='#a98e8b';ctx.fillRect(x,y,8,2);ctx.fillRect(x+2,y+4,5,2);}
+ if(state.world==='reef'){ctx.strokeStyle='#71d7e7';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,4+(j%3)*2,0,Math.PI*2);ctx.stroke();}
+ if(state.world==='town'){ctx.fillStyle='#edc988';ctx.fillRect(x,y,7,3);ctx.fillRect(x+4,y+4,2,3);}
+ ctx.restore();}
+}
+function drawFloor(x,y,t){const w=WORLDS[state.world],px=x*TILE,py=y*TILE;ctx.fillStyle=(x+y)%2?w.floor:w.floorAlt;ctx.fillRect(px,py,TILE+1,TILE+1);
+ if(state.world==='forest'){if((x*7+y*13)%7===0){ctx.strokeStyle='#78a96c';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(px+9,py+30);ctx.lineTo(px+7,py+24);ctx.moveTo(px+9,py+30);ctx.lineTo(px+12,py+23);ctx.stroke();}}
+ else if(state.world==='castle'){ctx.fillStyle='#aca39a55';ctx.fillRect(px+3,py+3,18,1);ctx.fillRect(px+27,py+27,12,1);}
+ else if(state.world==='reef'){if((x*11+y*5)%9===0){ctx.fillStyle='#a2f9fa55';circle(px+21,py+19+Math.sin(t*.002+x)*2,2.5,'#9ee7dd');}}
+ else if((x*3+y*5)%8===0){ctx.strokeStyle='#d4bf9060';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(px+5,py+32);ctx.lineTo(px+37,py+32);ctx.stroke();}
+}
+function drawWall(x,y){const w=WORLDS[state.world],px=x*TILE,py=y*TILE;ctx.fillStyle=w.wallDark;ctx.fillRect(px,py,TILE+1,TILE+1);box(px+2,py+3,TILE-4,TILE-6,5,w.wall,w.wallLight,2.3);
+ ctx.fillStyle=w.wallLight+'8b';ctx.fillRect(px+5,py+5,TILE-10,3);ctx.fillStyle=w.edge+'aa';ctx.fillRect(px+6,py+9,TILE-12,2);
+ ctx.fillStyle=w.wallDark+'80';ctx.fillRect(px+7,py+TILE-9,TILE-14,3);
+ if(state.world==='forest'&&(x*13+y*17)%11===0){circle(px+27,py+17,4,'#8fc669');circle(px+25,py+15,1.2,'#ecf3c5');}
+ if(state.world==='castle'){ctx.strokeStyle='#352d39a0';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(px+20,py+13);ctx.lineTo(px+20,py+TILE-7);ctx.stroke();}
+ if(state.world==='reef'&&(x*3+y*19)%7===0){circle(px+27,py+18,3,'#f7a5a0');}
+ if(state.world==='town'&&(x*7+y*11)%13===0){ctx.fillStyle='#fff0a0';ctx.fillRect(px+17,py+17,9,7);}
+}
+function drawDoors(t){const w=WORLDS[state.world];for(let i=0;i<state.doors.length;i++){const d=state.doors[i],x=d.x*TILE,y=d.y*TILE,bw=120,bh=82;const px=x-bw/2,py=y-bh/2;ctx.save();ctx.shadowColor='#080f10bb';ctx.shadowBlur=10;box(px,py,bw,bh,13,w.door,w.trim,4);ctx.shadowBlur=0;box(px+6,py+6,bw-12,bh-12,9,w.panel,w.wallLight,1.3);
+ ctx.strokeStyle=w.trim+'a0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(px+13,py+bh-14);ctx.lineTo(px+bw-13,py+bh-14);ctx.stroke();
+ for(let k=0;k<3;k++){const p=.30+.28*Math.sin(t*.002+k*1.9+i);circle(px+17+k*43,py+13,2.5,w.trim);ctx.globalAlpha=p;circle(px+17+k*43,py+13,5,w.trim);ctx.globalAlpha=1;}
+ let words=d.answer.split(' '),lines=[d.answer];if(d.answer.length>12&&words.length>1){const mid=Math.ceil(words.length/2);lines=[words.slice(0,mid).join(' '),words.slice(mid).join(' ')];}
+ const maxLen=Math.max(...lines.map(s=>s.length));const fs=Math.max(13,Math.min(22,Math.floor(114/(maxLen*.69))));ctx.fillStyle='#fffae8';ctx.font=`950 ${fs}px system-ui,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';for(let k=0;k<lines.length;k++)ctx.fillText(lines[k],x,y+(k-(lines.length-1)/2)*(fs+4)+7);
+ ctx.restore();}}
+function drawHero(t){const x=state.player.x*TILE,y=state.player.y*TILE;ctx.save();ctx.translate(x,y+Math.sin(t*.007)*1.1);if(state.invincible>0&&Math.floor(t/120)%2===0)ctx.globalAlpha=.55;
+ circle(0,14,13,'#0f202075');
+ // Outfit varies by world but remains recognizable.
+ const cape=state.world==='castle'?'#d7536f':state.world==='reef'?'#f3b66e':state.world==='town'?'#6b6fa8':'#eec66f';
+ ctx.fillStyle=cape;ctx.beginPath();ctx.moveTo(-10,1);ctx.lineTo(-16,18);ctx.lineTo(15,18);ctx.lineTo(9,0);ctx.fill();
+ box(-11,0,22,19,6,'#f5dfb4','#2f3d39',2);
+ box(-12,-18,24,23,9,'#f9e9c9','#2c443e',2);
+ // Hat / hair, short readable face
+ ctx.fillStyle=state.world==='reef'?'#3993a2':'#6d4736';ctx.beginPath();ctx.arc(0,-10,12,Math.PI,0);ctx.fill();
+ if(state.world==='forest'){box(-15,-20,30,7,3,'#56885a','#e1be83',1.3);box(-9,-28,18,10,3,'#56885a','#d9bd81',1.2);}
+ if(state.world==='castle'){box(-15,-21,30,7,3,'#727784','#f4d39d',1.5);box(-8,-29,16,12,3,'#90949c','#f4d39d',1.5);}
+ if(state.world==='reef'){box(-13,-20,26,8,4,'#72d9d4','#e9f6d2',1.7);circle(-7,-13,3,'#1d657f');circle(7,-13,3,'#1d657f');}
+ if(state.world==='town'){box(-14,-18,28,7,3,'#b9cf89','#fff4b0',1.5);}
+ circle(-5,-8,2.2,'#253b37');circle(5,-8,2.2,'#253b37');ctx.strokeStyle='#934f4e';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(0,-3,4,0,Math.PI);ctx.stroke();
+ box(-11,15,9,8,3,'#463a32');box(2,15,9,8,3,'#463a32');ctx.restore();}
+function drawChest(c,t){const x=c.x*TILE,y=c.y*TILE;ctx.save();ctx.translate(x,y);const wob=Math.sin(t*.004+c.pulse)*2;ctx.translate(0,wob);circle(0,15,13,'#00000030');if(c.opened){box(-14,-6,28,18,5,'#8f6947','#f4d08b',2);box(-14,-8,28,7,5,'#b78655','#ffd98d',2);ctx.fillStyle='#fff2b0';ctx.fillRect(-3,-20,6,12);}else{box(-14,-2,28,18,5,'#8a5e34','#f1c56f',2);box(-14,-9,28,9,5,'#b2783f','#ffd579',2);ctx.fillStyle='#f5e7ac';ctx.fillRect(-3,-2,6,9);}ctx.restore();}
+function drawProjectile(p,t){const x=p.x*TILE,y=p.y*TILE;ctx.save();ctx.translate(x,y);if(p.type==='wand'){circle(0,0,5,'#aef8ff');circle(0,0,2,'#fff');}else if(p.type==='trident'){ctx.strokeStyle='#ffd391';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-8,0);ctx.lineTo(7,0);ctx.stroke();ctx.fillStyle='#ffd391';ctx.fillRect(4,-4,6,2);ctx.fillRect(4,2,6,2);}else{ctx.strokeStyle='#f7e7b0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-7,-2);ctx.lineTo(7,2);ctx.stroke();ctx.fillStyle='#f7e7b0';ctx.beginPath();ctx.moveTo(9,2);ctx.lineTo(4,5);ctx.lineTo(6,0);ctx.fill();}ctx.restore();}
+function drawEnemy(e,t){const w=state.world,x=e.x*TILE,y=e.y*TILE+Math.sin(t*.006+e.phase)*2;ctx.save();ctx.translate(x,y);circle(0,12,12,'#07171777');
+ if(w==='forest'){circle(0,0,13,'#efc467');circle(-9,-10,5,'#bc784c');circle(8,-10,5,'#bc784c');ctx.strokeStyle='#8a6839';ctx.lineWidth=2;for(const d of [-1,1]){ctx.beginPath();ctx.moveTo(d*10,5);ctx.lineTo(d*17,10);ctx.moveTo(d*12,-2);ctx.lineTo(d*18,-4);ctx.stroke();}circle(-5,-2,2,'#162c24');circle(5,-2,2,'#162c24');}
+ if(w==='castle'){ctx.fillStyle='#deeeff';ctx.beginPath();ctx.arc(0,-2,13,Math.PI,0);ctx.lineTo(13,14);ctx.lineTo(6,9);ctx.lineTo(0,14);ctx.lineTo(-6,9);ctx.lineTo(-13,14);ctx.closePath();ctx.fill();circle(-5,-2,2.5,'#2a4161');circle(5,-2,2.5,'#2a4161');}
+ if(w==='reef'){ctx.fillStyle='#f89383';ctx.beginPath();ctx.arc(0,3,13,Math.PI,0);ctx.lineTo(12,11);ctx.lineTo(-12,11);ctx.closePath();ctx.fill();ctx.strokeStyle='#e47978';ctx.lineWidth=3;for(const d of [-1,1]){ctx.beginPath();ctx.moveTo(d*10,8);ctx.lineTo(d*18,14);ctx.moveTo(d*10,3);ctx.lineTo(d*19,0);ctx.stroke();}circle(-4,-1,2,'#203b41');circle(4,-1,2,'#203b41');}
+ if(w==='town'){circle(0,1,12,'#b2db92');ctx.fillStyle='#87a55c';ctx.beginPath();ctx.moveTo(-11,-5);ctx.lineTo(-14,-18);ctx.lineTo(-1,-11);ctx.lineTo(4,-15);ctx.lineTo(10,-4);ctx.fill();circle(-4,0,2.5,'#263a2b');circle(5,0,2.5,'#263a2b');}
+ ctx.restore();}
+function render(t){ctx.clearRect(0,0,WIDTH,HEIGHT);worldBackground(t);
+ for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){if(isWall(x,y))drawWall(x,y);else drawFloor(x,y,t);}
+ // Ground details in the passage, not on the gates
+ if(state.world==='forest'){for(const [x,y] of [[1,1],[21,13],[11,3]])if(!isWall(x,y)){circle((x+.5)*TILE,(y+.5)*TILE,3,'#f1d68c');}}
+ if(state.world==='reef'){for(const [x,y] of [[1,5],[21,9],[11,13]])if(!isWall(x,y)){circle((x+.5)*TILE,(y+.5)*TILE,5,'#e79b97');}}
+ for(const chest of state.chests)drawChest(chest,t);drawDoors(t);for(const e of state.enemies)drawEnemy(e,t);for(const p of state.projectiles)drawProjectile(p,t);drawHero(t);if(state.slash>0){ctx.save();ctx.translate(state.player.x*TILE,state.player.y*TILE);ctx.strokeStyle='#ffe59d';ctx.lineWidth=6;ctx.globalAlpha=Math.max(.2,state.slash*4);ctx.beginPath();ctx.arc(0,0,34,-.9,.9);ctx.stroke();ctx.restore();}
+ if(state.auto.length){const d=state.auto[state.auto.length-1];ctx.strokeStyle='#ffeb9b';ctx.lineWidth=2;ctx.beginPath();ctx.arc(d.x*TILE,d.y*TILE,7,0,Math.PI*2);ctx.stroke();}
+}
+function frame(t){const dt=Math.min(.04,Math.max(0,(t-lastFrame)/1000));lastFrame=t;
+ if(state.status==='playing'){
+ state.elapsed+=dt;state.invincible=Math.max(0,state.invincible-dt);state.slash=Math.max(0,state.slash-dt);
+ if(Number.isFinite(state.time)){state.time=Math.max(0,state.time-dt);if(state.time===0){overlay({icon:'⌛',title:'¡Se acabó el tiempo!',text:'Puedes volver a intentar esta fase con la misma pregunta.',action:'↻ Repetir etapa',onAction:()=>{populate(true);resume();}});}else if(Math.ceil(state.time)!==Math.ceil(state.time+dt))$('time').textContent=Math.ceil(state.time)+'s';}
+ if(state.status==='playing'){walk(dt);checkChest();moveProjectiles(dt);if(state.status==='playing')moveEnemies(dt);}
+ }
+ if(t>noticeUntil)$('toast').classList.remove('visible');render(t);animId=requestAnimationFrame(frame);
+}
+const KEYMAP={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',KeyW:'up',KeyS:'down',KeyA:'left',KeyD:'right'};
+window.addEventListener('keydown',e=>{if(KEYMAP[e.code]){if(state.status==='playing'){e.preventDefault();keys[KEYMAP[e.code]]=true;}return;}if((e.code==='KeyF'||e.code==='Slash')&&!e.repeat){e.preventDefault();useWeapon();return;}if(e.code==='Space'&&!e.repeat){e.preventDefault();pause();}if(e.code==='Enter'&&!e.repeat&&state.status==='modal'){$('modalAction').click();}});
+window.addEventListener('keyup',e=>{if(KEYMAP[e.code])keys[KEYMAP[e.code]]=false;});
+window.addEventListener('blur',()=>{keys={up:false,down:false,left:false,right:false};if(state.status==='playing')pause();});
+for(const b of document.querySelectorAll('[data-move]')){const dir=b.dataset.move;b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);keys[dir]=true;b.classList.add('held');});for(const event of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(event,()=>{keys[dir]=false;b.classList.remove('held');});}
+for(const event of ['pointerdown','mousedown','touchstart'])$('attackPad').addEventListener(event,e=>{e.preventDefault();useWeapon();$('attackPad').classList.add('held');},{passive:false});for(const event of ['pointerup','pointercancel','mouseup','mouseleave','touchend'])$('attackPad').addEventListener(event,()=>{$('attackPad').classList.remove('held');});
+canvas.addEventListener('pointerdown',clickToMove);
+$('grade').addEventListener('change',()=>{updateTopicOptions();startNew();});
+for(const k of ['topic','world','mode'])$(k).addEventListener('change',startNew);
+$('restart').addEventListener('click',startNew);
+$('attack').addEventListener('click',useWeapon);$('pause').addEventListener('click',pause);
+$('nextQuestion').addEventListener('click',freshQuestion);
+$('hint').addEventListener('click',giveHint);
+$('resetPosition').addEventListener('click',()=>{if(state.status==='playing'){safeSpawn();toast('De vuelta al centro');}});
+$('speak').addEventListener('click',speak);
+$('soundToggle').addEventListener('click',()=>{soundsOn=!soundsOn;$('soundToggle').textContent=soundsOn?'🔊':'🔇';});
+$('fullScreen').addEventListener('click',()=>{if(document.fullscreenElement)document.exitFullscreen?.();else $('game').requestFullscreen?.().catch(()=>toast('Pantalla completa no disponible'));});
+// Expose read-only snapshots and offline invariants for automated acceptance testing.
+window.__ADVENTURE_TEST__={snapshot:()=>({level:state.level,points:state.points,world:state.world,status:state.status,grade:state.grade,topic:state.topic,hearts:state.hearts,doors:state.doors.map(d=>({...d})),player:{...state.player},question:{...state.question},enemyCount:state.enemies.length,chestCount:state.chests.length,weapon:{...state.weapon},grid:state.grid.map(row=>row.slice())}),validate:()=>{const reach=distanceMap(SP.x,SP.y);return{allDoorsReachable:state.doors.every(d=>Number.isFinite(reach[Math.floor(d.y)][Math.floor(d.x)])),allChestsReachable:state.chests.every(c=>Number.isFinite(reach[Math.floor(c.y)][Math.floor(c.x)])),onlyOneCorrect:state.doors.filter(d=>d.correct).length===1,playerWalkable:!collision(state.player.x,state.player.y),allEnemiesWalkable:state.enemies.every(e=>!collision(e.x,e.y,.14)),optionsUnique:new Set(state.question.options).size===state.question.options.length}},next:()=>{if(state.status==='modal')resume();state.level++;populate();},enterCorrect:()=>{if(state.status==='modal')resume();state.player={...state.doors.find(d=>d.correct)};success();},openChest:()=>{if(state.chests[0]){state.player={x:state.chests[0].x,y:state.chests[0].y};checkChest();}},attack:()=>useWeapon()};
+updateTopicOptions();startNew();animId=requestAnimationFrame(frame);
+})();
+</script></body></html>
